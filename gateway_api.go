@@ -50,7 +50,7 @@ func (r *HttpRoute[T]) AddPolicy(policy PolicySpec[T]) {
 	r.policies = append(r.policies, policy)
 }
 
-func (r *HttpRoute[T]) PoliciesToMerge() []T {
+func (r *HttpRoute[T]) MergedPolicies(merger func(T, T) T) T {
 	var policies []T
 	for _, policy := range r.policies {
 		policies = append(policies, policy.defaults)
@@ -64,7 +64,11 @@ func (r *HttpRoute[T]) PoliciesToMerge() []T {
 		policies = append(policies, policy.defaults)
 		policies = append([]T{policy.overrides}, policies...)
 	}
-	return policies
+	result := policies[0]
+	for _, policy := range policies[1:] {
+		result = merger(result, policy)
+	}
+	return result
 }
 
 type PolicySpec[T Policy] struct {

@@ -9,15 +9,13 @@ type FakePolicy struct {
 	value   *int
 }
 
-func FakePolicyMerger(policies []FakePolicy) FakePolicy {
-	result := policies[0]
-	for _, policy := range policies[1:] {
-		if result.enabled == nil {
-			result.enabled = policy.enabled
-		}
-		if result.value == nil {
-			result.value = policy.value
-		}
+func FakePolicyMerger(overrides FakePolicy, defaults FakePolicy) FakePolicy {
+	result := overrides
+	if result.enabled == nil {
+		result.enabled = defaults.enabled
+	}
+	if result.value == nil {
+		result.value = defaults.value
 	}
 	return result
 }
@@ -48,7 +46,7 @@ func TestRouteSimpleMerge(t *testing.T) {
 		t.Failed()
 	}
 
-	result := FakePolicyMerger(route.PoliciesToMerge())
+	result := route.MergedPolicies(FakePolicyMerger)
 	if *result.value != 42 {
 		t.Failed()
 	}
@@ -87,7 +85,7 @@ func TestRouteGwMerge(t *testing.T) {
 	}
 	route.AddPolicy(routePolicy)
 
-	result := FakePolicyMerger(route.PoliciesToMerge())
+	result := route.MergedPolicies(FakePolicyMerger)
 	if *result.value != 420 {
 		t.Failed()
 	}
@@ -120,7 +118,7 @@ func TestRouteGwMergeDefaults(t *testing.T) {
 	}
 	route.AddPolicy(routePolicy)
 
-	result := FakePolicyMerger(route.PoliciesToMerge())
+	result := route.MergedPolicies(FakePolicyMerger)
 	if *result.value != 420 {
 		t.Failed()
 	}
