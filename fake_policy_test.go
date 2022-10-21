@@ -26,10 +26,10 @@ func TestRouteSimpleMerge(t *testing.T) {
 	route := gw.CreateRoute("route")
 
 	if gw.parent != &gwc || gw.name != "gw" {
-		t.Failed()
+		t.Fail()
 	}
 	if route.parent != gw || route.name != "route" {
-		t.Failed()
+		t.Fail()
 	}
 
 	value := 42
@@ -43,15 +43,15 @@ func TestRouteSimpleMerge(t *testing.T) {
 	route.AddPolicy(policy)
 
 	if route.policies[0] != policy {
-		t.Failed()
+		t.Fail()
 	}
 
 	result := route.MergedPolicies(FakePolicyMerger)
 	if *result.value != 42 {
-		t.Failed()
+		t.Fail()
 	}
 	if *result.enabled != true {
-		t.Failed()
+		t.Fail()
 	}
 }
 
@@ -61,10 +61,10 @@ func TestRouteGwMerge(t *testing.T) {
 	route := gw.CreateRoute("route")
 
 	if gw.parent != &gwc || gw.name != "gw" {
-		t.Failed()
+		t.Fail()
 	}
 	if route.parent != gw || route.name != "route" {
-		t.Failed()
+		t.Fail()
 	}
 
 	gwDefault := 42
@@ -87,10 +87,10 @@ func TestRouteGwMerge(t *testing.T) {
 
 	result := route.MergedPolicies(FakePolicyMerger)
 	if *result.value != 420 {
-		t.Failed()
+		t.Fail()
 	}
 	if *result.enabled != true {
-		t.Failed()
+		t.Fail()
 	}
 }
 
@@ -120,9 +120,9 @@ func TestRouteGwMergeDefaults(t *testing.T) {
 
 	result := route.MergedPolicies(FakePolicyMerger)
 	if *result.value != 420 {
-		t.Failed()
+		t.Fail()
 	}
 	if *result.enabled != true {
-		t.Failed()
+		t.Fail()
 	}
 }
