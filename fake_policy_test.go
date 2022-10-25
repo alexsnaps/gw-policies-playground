@@ -11,13 +11,13 @@ type FakePolicy struct {
 	value   *int
 }
 
-func FakePolicyMerger(overrides FakePolicy, defaults FakePolicy) FakePolicy {
-	result := overrides
+func FakePolicyMerger(p1 FakePolicy, p2 FakePolicy) FakePolicy {
+	result := p1
 	if result.enabled == nil {
-		result.enabled = defaults.enabled
+		result.enabled = p2.enabled
 	}
 	if result.value == nil {
-		result.value = defaults.value
+		result.value = p2.value
 	}
 	return result
 }
