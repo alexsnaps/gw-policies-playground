@@ -2,6 +2,8 @@ package gw_policies_playground
 
 import (
 	"testing"
+
+	"gotest.tools/assert"
 )
 
 type FakePolicy struct {
@@ -25,12 +27,10 @@ func TestRouteSimpleMerge(t *testing.T) {
 	gw := gwc.CreateGateway("gw")
 	route := gw.CreateRoute("route")
 
-	if gw.parent != &gwc || gw.name != "gw" {
-		t.Fail()
-	}
-	if route.parent != gw || route.name != "route" {
-		t.Fail()
-	}
+  assert.Equal(t, gw.parent, &gwc)
+  assert.Equal(t, gw.name, "gw")
+  assert.Equal(t, route.parent, gw)
+  assert.Equal(t, route.name, "route")
 
 	value := 42
 	enabled := true
@@ -42,17 +42,12 @@ func TestRouteSimpleMerge(t *testing.T) {
 	}
 	route.AddPolicy(policy)
 
-	if route.policies[0] != policy {
-		t.Fail()
-	}
+  assert.Equal(t, route.policies[0], policy)
 
 	result := route.MergedPolicies(FakePolicyMerger)
-	if *result.value != 42 {
-		t.Fail()
-	}
-	if *result.enabled != true {
-		t.Fail()
-	}
+
+	assert.Equal(t, *result.value, 42)
+	assert.Check(t, *result.enabled)
 }
 
 func TestRouteGwMerge(t *testing.T) {
@@ -60,12 +55,10 @@ func TestRouteGwMerge(t *testing.T) {
 	gw := gwc.CreateGateway("gw")
 	route := gw.CreateRoute("route")
 
-	if gw.parent != &gwc || gw.name != "gw" {
-		t.Fail()
-	}
-	if route.parent != gw || route.name != "route" {
-		t.Fail()
-	}
+  assert.Equal(t, gw.parent, &gwc)
+  assert.Equal(t, gw.name, "gw")
+  assert.Equal(t, route.parent, gw)
+  assert.Equal(t, route.name, "route")
 
 	gwDefault := 42
 	routeOverride := 420
@@ -86,12 +79,8 @@ func TestRouteGwMerge(t *testing.T) {
 	route.AddPolicy(routePolicy)
 
 	result := route.MergedPolicies(FakePolicyMerger)
-	if *result.value != 420 {
-		t.Fail()
-	}
-	if *result.enabled != true {
-		t.Fail()
-	}
+	assert.Equal(t, *result.value, 420)
+	assert.Check(t, *result.enabled)
 }
 
 func TestRouteGwMergeDefaults(t *testing.T) {
@@ -119,10 +108,6 @@ func TestRouteGwMergeDefaults(t *testing.T) {
 	route.AddPolicy(routePolicy)
 
 	result := route.MergedPolicies(FakePolicyMerger)
-	if *result.value != 420 {
-		t.Fail()
-	}
-	if *result.enabled != true {
-		t.Fail()
-	}
+	assert.Equal(t, *result.value, 420)
+	assert.Check(t, *result.enabled)
 }
