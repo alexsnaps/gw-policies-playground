@@ -72,7 +72,7 @@ func TestRouteGwMerge(t *testing.T) {
 	gw.AddPolicy(gwPolicy)
 
 	routePolicy := PolicySpec[FakePolicy]{
-		name:      "gw_policy",
+		name:      "route_policy",
 		defaults:  FakePolicy{value: &gwDefault},
 		overrides: FakePolicy{value: &routeOverride},
 	}
