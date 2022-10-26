@@ -27,10 +27,10 @@ func TestRouteSimpleMerge(t *testing.T) {
 	gw := gwc.CreateGateway("gw")
 	route := gw.CreateRoute("route")
 
-  assert.Equal(t, gw.parent, &gwc)
-  assert.Equal(t, gw.name, "gw")
-  assert.Equal(t, route.parent, gw)
-  assert.Equal(t, route.name, "route")
+	assert.Equal(t, gw.parent, &gwc)
+	assert.Equal(t, gw.name, "gw")
+	assert.Equal(t, route.parent, gw)
+	assert.Equal(t, route.name, "route")
 
 	value := 42
 	enabled := true
@@ -42,7 +42,7 @@ func TestRouteSimpleMerge(t *testing.T) {
 	}
 	route.AddPolicy(policy)
 
-  assert.Equal(t, route.policies[0], policy)
+	assert.Equal(t, route.policies[0], policy)
 
 	result := route.MergedPolicies(FakePolicyMerger)
 
@@ -55,10 +55,10 @@ func TestRouteGwMerge(t *testing.T) {
 	gw := gwc.CreateGateway("gw")
 	route := gw.CreateRoute("route")
 
-  assert.Equal(t, gw.parent, &gwc)
-  assert.Equal(t, gw.name, "gw")
-  assert.Equal(t, route.parent, gw)
-  assert.Equal(t, route.name, "route")
+	assert.Equal(t, gw.parent, &gwc)
+	assert.Equal(t, gw.name, "gw")
+	assert.Equal(t, route.parent, gw)
+	assert.Equal(t, route.name, "route")
 
 	gwDefault := 42
 	routeOverride := 420
