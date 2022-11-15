@@ -56,8 +56,11 @@ func AuthPolicyMerger(p1, p2 AuthPolicy) AuthPolicy {
 	}
 
 	// Conditions
-	result.Conditions = append(result.Conditions, p1.Conditions...)
-	result.Conditions = append(result.Conditions, p2.Conditions...)
+	if len(p1.Conditions) > 0 {
+		result.Conditions = append(result.Conditions, p1.Conditions...)
+	} else if len(p2.Conditions) > 0 {
+		result.Conditions = append(result.Conditions, p2.Conditions...)
+	}
 
 	// Identity
 	result.Identity = append(result.Identity, p1.Identity...)
